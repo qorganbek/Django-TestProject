@@ -7,6 +7,7 @@ class Account(models.Model):
     lastName = models.CharField(max_length=25)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='accounts/', blank=True, null=True)
 
     def __str__(self):
         return f'{self.firstName} {self.lastName}'
