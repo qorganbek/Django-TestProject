@@ -1,4 +1,6 @@
 from typing import Protocol, OrderedDict
+
+from django.db import transaction
 from django.db.models import QuerySet, Sum, Avg, Case, When, F, DecimalField, Q
 from decimal import Decimal
 from accounts import models, constants
@@ -30,9 +32,9 @@ class AccountReposV1:
         ).all()
 
     def create_account(self, data: OrderedDict) -> None:
-        wallets = data.pop('wallets')
-        account = models.Account.objects.create(**data)
-        models.Wallet.objects.bulk_create([
-            models.Wallet(**w, account=account) for w in wallets
-        ])
+        with transaction.atomic():
+            wallets = data.pop('wallets')
+            account = models.Account.objects.create(**data)
+            raise AttributeError
+            models.Wallet.objects.bulk_create([models.Wallet(**w, account=account) for w in wallets])
 
