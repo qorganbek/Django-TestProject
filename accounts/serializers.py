@@ -22,11 +22,11 @@ class _WalletSerializer(serializers.ModelSerializer):
         fields = ['amount', 'amountCurrency']
 
 
-class AccountSerializer(serializers.ModelSerializer):
+class CreateAccountSerializer(serializers.ModelSerializer):
     wallets = _WalletSerializer(write_only=True, many=True)
-    total_sum = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
-    avg_amount = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
-    custom_amount = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
+    # total_sum = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
+    # avg_amount = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
+    # custom_amount = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
 
     class Meta:
         model = models.Account
@@ -47,7 +47,7 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AccountSerializerV2(serializers.ModelSerializer):
+class RetrieveAccountSerializer(serializers.ModelSerializer):
     wallets = _WalletSerializer(read_only=True, many=True)
 
     class Meta:

@@ -7,14 +7,19 @@ from accounts import models, constants
 
 
 class AccountReposInterface(Protocol):
-    def get_accounts(self) -> QuerySet[models.Account]: ...
+    def get_accounts(self, action: str) -> QuerySet[models.Account]: ...
 
     def create_account(self, data: OrderedDict) -> None: ...
 
 
 class AccountReposV1:
-    def get_accounts(self) -> QuerySet[models.Account]:
-        return models.Account.objects.prefetch_related('wallets').annotate(
+    def get_accounts(self, action: str) -> QuerySet[models.Account]:
+        accounts = models.Account.objects.all()
+
+        if action not in ('list', 'retrieve'):
+            return accounts
+
+        return accounts.prefetch_related('wallets').annotate(
             total_sum=Sum(
                 'wallets__amount',
                 default=Decimal(0.0),
